@@ -1,0 +1,29 @@
+   {
+        "name": "Wireless Headphones",
+        "price": 99.99,
+        "image": "https://hips.hearstapps.com/hmg-prod/images/best-headphones-under-50-6581c39a63303.jpg?crop=0.502xw:1.00xh;0.251xw,0&resize=360:*",
+        "brand": "AudioTech",
+        "category": "Electronics",
+        "countInStock": 50,
+        "description": "High-quality wireless headphones with noise-cancellation and long battery life."
+      },
+      {
+        "name": "Small Travel Bag",
+        "price": 39.99,
+        "image": "https://sl.bing.net/iGHemDiSu6K",
+        "brand": "Redbox",
+        "category": "Bages",
+        "countInStock": 120,
+        "description": "Small Travel Bag, with 5 colors, weight:10 bound."
+      },
+      {
+        "name": "ChainSaw",
+        "price": 3119.99,
+        "image": "https://cdnmedia.endeavorsuite.com/images/catalogs/19318/products/detail/2774c46c-7b3f-4c30-a6f3-6b59c98223aa.jpg",
+        "brand": "StandTech",
+        "category": "Electrical Ampliances",
+        "countInStock": 10,
+        "description": "New Residential Lawn Mowers The Boston Lawnmower Company Westborough ...."
+      },
+    
+    
