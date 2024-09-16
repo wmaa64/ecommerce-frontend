@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL:  'ecommerce-backend-fxpe92iue-wael-alys-projects.vercel.app'
+  baseURL:  'https://ecommerce-backend-k0g6fh9lw-wael-alys-projects.vercel.app'
 });
 
 export default axiosInstance;
