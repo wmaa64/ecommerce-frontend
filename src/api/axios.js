@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL:  'https://ecommerce-backend-b85krociz-wael-alys-projects.vercel.app'
+  baseURL:  'https://ecommerce-backend-z4v3.onrender.com'
 });
 
 export default axiosInstance;
