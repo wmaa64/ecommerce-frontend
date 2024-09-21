@@ -60,16 +60,17 @@ const ProductForm = ({ currentProduct, onSave , subcategories }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextField label="Name" value={name} onChange={(e) => setName(e.target.value)} fullWidth required />
-      <TextField label="Price" value={price} onChange={(e) => setPrice(e.target.value)} fullWidth required />
-      <TextField label="Image URL" value={image} onChange={(e) => setImage(e.target.value)} fullWidth />
-      <TextField label="Brand" value={brand} onChange={(e) => setBrand(e.target.value)} fullWidth />
-      <TextField label="Count in Stock" value={countInStock} onChange={(e) => setCountInStock(e.target.value)} fullWidth required />
-      <TextField label="Description" value={description} onChange={(e) => setDescription(e.target.value)} fullWidth multiline rows={4} />
+      <TextField label="Name" value={name} variant='filled' size='small' onChange={(e) => setName(e.target.value)} fullWidth required />
+      <TextField label="Price" value={price} variant='filled' size='small' onChange={(e) => setPrice(e.target.value)} fullWidth required />
+      <TextField label="Image URL" value={image} variant='filled' size='small' onChange={(e) => setImage(e.target.value)} fullWidth />
+      <TextField label="Brand" value={brand} variant='filled' size='small' onChange={(e) => setBrand(e.target.value)} fullWidth />
+      <TextField label="Count in Stock" value={countInStock} variant='filled' size='small' onChange={(e) => setCountInStock(e.target.value)} fullWidth required />
+      <TextField label="Description" value={description} variant='filled' size='small' onChange={(e) => setDescription(e.target.value)} fullWidth multiline rows={4} />
       <TextField
         select
         label="Subcategory"
         value={subcategoryId}
+        variant='filled' size='small' 
         onChange={(e) => setSubcategoryId(e.target.value)}
         fullWidth
         required
