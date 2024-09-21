@@ -11,7 +11,14 @@ const SubcategoryForm = ({ currentSubcategory, onSave, categories }) => {
     if (currentSubcategory) {
       setName(currentSubcategory.name);
       setDescription(currentSubcategory.description);
-      setCategoryId(currentSubcategory.categoryId);
+
+      // Handle both populated object (from .populate) and plain string ID
+      const categoryIdValue = currentSubcategory.categoryId?._id 
+      ? currentSubcategory.categoryId._id // If populated, use the _id field
+      : currentSubcategory.categoryId; // Else, use the plain categoryId
+
+      setCategoryId(categoryIdValue);
+      
     } else {
       setName('');
       setDescription('');

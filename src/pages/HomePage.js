@@ -101,6 +101,9 @@ const handleSubCatsSearch = async (selectedNodes) => {
               <Button component={Link} to="/manage-subcategories" variant="contained" color="secondary" sx={{marginBottom: '4px'}}>
                 Manage Subcategories
               </Button>
+              <Button component={Link} to="/manage-products" variant="contained" color="secondary" sx={{marginBottom: '4px'}}>
+                Manage Products
+              </Button>
 
             </Paper>
           </Grid>
