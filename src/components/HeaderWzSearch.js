@@ -3,12 +3,25 @@ import { TextField, Box, Button } from '@mui/material';
 import { AppBar, Toolbar, IconButton, Typography, Badge, Menu, MenuItem } from '@mui/material';
 import { ShoppingBasket, Menu as MenuIcon, AccountCircle } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
+import { Link, json, useNavigate } from 'react-router-dom';
 
 const HeaderWzSearch = ({ onSearch }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
     const theme = useTheme();
+    const navigate = useNavigate();
+
+    // Check if the user is logged in by fetching userInfo from localStorage
+    const userInfo = localStorage.getItem('userInfo') 
+      ? JSON.parse(localStorage.getItem('userInfo')) : null ;
+
+
+    const handleLogout = () => {
+      localStorage.removeItem('userInfo') ;
+      navigate('/login');
+    }      
+
 
     const handleMenuOpen = (event) => {
       setAnchorEl(event.currentTarget);
@@ -55,7 +68,7 @@ const HeaderWzSearch = ({ onSearch }) => {
             <TextField    sx={{ backgroundColor: 'white', 
                                 '& .MuiInputBase-input': {
                                     color: theme.palette.secondary.main , // Text color
-                                    }
+                                    }, width: '70vh'
                                  }}
                 label="Search Products"
                 variant="filled"
@@ -65,10 +78,38 @@ const HeaderWzSearch = ({ onSearch }) => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <Button variant="contained" color="secondary"  onClick={handleSearch_} sx={{ ml: 2 }}>
+            <Button variant="contained" color="secondary"  onClick={handleSearch_} sx={{ ml: 2, mr:2 }}>
                 Search
             </Button>
-         
+          
+          {userInfo ? (
+            <Box display='flex' gap={2}>
+              <Typography variant="h6" style={{ minWidth: '30vh' }} >
+                  <span>Welcome, {userInfo.name} </span>
+              </Typography>
+
+              {/* check is seller to display Seller DashBoard */}
+              {(userInfo.isSeller) && 
+                  <Link to='/dashboard' >
+                    <Box sx={{padding: '8px',backgroundColor: '#f0f0f0',borderRadius: '4px','&:hover': {backgroundColor: '#e0e0e0'}}}>DashBoard</Box>
+                  </Link>
+              }
+
+              <Link to='#' onClick={handleLogout} >
+                <Box sx={{padding: '8px',backgroundColor: '#f0f0f0',borderRadius: '4px','&:hover': {backgroundColor: '#e0e0e0'}}}>Logout</Box>
+              </Link>
+            </Box>
+              
+          ) : (
+            <Box  display='flex' gap={2} >
+              <Link to='/login' >
+                <Box sx={{padding: '8px',backgroundColor: '#f0f0f0',borderRadius: '4px','&:hover': {backgroundColor: '#e0e0e0'}}}>Login</Box>
+              </Link>
+              <Link to='/register'>
+                <Box sx={{padding: '8px',backgroundColor: '#f0f0f0',borderRadius: '4px','&:hover': {backgroundColor: '#e0e0e0'}}}>Register</Box>
+              </Link>
+            </Box>
+          )}
 
           {/* Shopping Basket Icon */}
           <IconButton color="inherit">

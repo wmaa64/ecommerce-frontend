@@ -95,6 +95,8 @@ const handleSubCatsSearch = async (selectedNodes) => {
               <Typography variant="subtitle2" sx={{color: 'blue', }} >Choose SubCategories, Then Press Search...</Typography>
               {/* Content for the left section */}
               <CategoryTreeView  onSearch={handleSubCatsSearch} />
+
+              {/*
               <Button component={Link} to="/manage-categories" variant="contained" color="secondary" sx={{mb: '4px'}}>
                 Manage Categories
               </Button>
@@ -104,7 +106,8 @@ const handleSubCatsSearch = async (selectedNodes) => {
               <Button component={Link} to="/manage-products" variant="contained" color="secondary" sx={{marginBottom: '4px'}}>
                 Manage Products
               </Button>
-
+              */}
+              
             </Paper>
           </Grid>
 

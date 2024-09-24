@@ -45,7 +45,6 @@ const CategoryManagementPage = () => {
 
   return (
     <div>
-    <Header/>
     <Container maxWidth={false} sx={{
         margin:0,
         padding: 0,
