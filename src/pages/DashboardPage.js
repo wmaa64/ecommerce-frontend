@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Badge, Menu, MenuItem } from '@mui/material';
 import { ShoppingBasket, Menu as MenuIcon, AccountCircle } from '@mui/icons-material';
-import CategoryManagementPage from '../pages/CategoryManagementPage';
-import SubcategoryManagementPage from '../pages/SubcategoryManagementPage';
-import ProductManagementPage from '../pages/ProductManagementPage';
+import CategoryManagementPage from './CategoryManagementPage';
+import SubcategoryManagementPage from './SubcategoryManagementPage';
+import ProductManagementPage from './ProductManagementPage';
+import ShopManagementPage from './ShopManagementPage';
 
 const DashboardHeader = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -33,6 +34,9 @@ const DashboardHeader = () => {
             return <SubcategoryManagementPage />;  // This will display your ManageProductPage component
         case 'ProductManagementPage':
             return <ProductManagementPage />;  // This will display your ManageProductPage component    
+        case 'ShopManagementPage':
+              return <ShopManagementPage />;  // This will display your ManageProductPage component
+  
         default:
             return <Typography variant="h6">Please select an option from the drawer</Typography>;
     }
@@ -50,7 +54,8 @@ const DashboardHeader = () => {
     >
       <MenuItem onClick={() => handlePageChange('CategoryManagementPage')}>Manage Categories</MenuItem>
       <MenuItem onClick={() => handlePageChange('SubcategoryManagementPage')}>Manage SubCategories</MenuItem>
-      <MenuItem onClick={() => handlePageChange('ProductManagementPage')}>Manage Products</MenuItem>            
+      <MenuItem onClick={() => handlePageChange('ProductManagementPage')}>Manage Products</MenuItem>
+      <MenuItem onClick={() => handlePageChange('ShopManagementPage')}>Manage Shops</MenuItem>            
     </Menu>
   );
 
