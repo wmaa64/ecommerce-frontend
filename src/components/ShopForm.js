@@ -8,6 +8,11 @@ const ShopForm = ({ currentShop, onSave, users }) => {
   const [image, setImage] = useState('');
   const [userId, setUserId] = useState('');
 
+  // Check if the user is logged in by fetching userInfo from localStorage
+  const userInfo = localStorage.getItem('userInfo') 
+  ? JSON.parse(localStorage.getItem('userInfo')) : null ;
+
+
   useEffect(() => {
     if (currentShop) {
       setName(currentShop.name);
@@ -15,17 +20,20 @@ const ShopForm = ({ currentShop, onSave, users }) => {
       setImage(currentShop.image);
 
       // Handle both populated object (from .populate) and plain string ID
+      /*
       const userIdValue = currentShop.userId?._id 
       ? currentShop.userId._id // If populated, use the _id field
       : currentShop.userId; // Else, use the plain userId
+      */
 
-      setUserId(userIdValue);
+      //setUserId(userIdValue);
+      setUserId(userInfo._id);
       
     } else {
       setName('');
       setDescription('');
       setImage('');
-      setUserId('');
+      setUserId(userInfo._id);
     }
   }, [currentShop]);
 
@@ -65,7 +73,7 @@ const ShopForm = ({ currentShop, onSave, users }) => {
           margin="normal"
         />
 
-        <TextField
+        {/*<TextField
           select
           label="UserId"
           value={userId}
@@ -78,7 +86,8 @@ const ShopForm = ({ currentShop, onSave, users }) => {
               {user.name}
             </MenuItem>
           ))}
-        </TextField>
+          </TextField>*/}
+          
         <Button type="submit" variant="contained" color="primary">
           {currentShop ? 'Update Shop' : 'Add Shop'}
         </Button>

@@ -1,24 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Box, Button } from '@mui/material';
 import { AppBar, Toolbar, IconButton, Typography, Badge, Menu, MenuItem } from '@mui/material';
 import { ShoppingBasket, Menu as MenuIcon, AccountCircle } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { Link, json, useNavigate } from 'react-router-dom';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
 
 const HeaderWzSearch = ({ onSearch }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [anchorEl, setAnchorEl] = useState(null);
+    const [basketCount, setBasketCount] = useState(0);
+
     const isMenuOpen = Boolean(anchorEl);
     const theme = useTheme();
     const navigate = useNavigate();
 
     // Check if the user is logged in by fetching userInfo from localStorage
     const userInfo = localStorage.getItem('userInfo') 
-      ? JSON.parse(localStorage.getItem('userInfo')) : null ;
+    ? JSON.parse(localStorage.getItem('userInfo')) : null ;
+      
+    // Fetch the basket count when user logs in
+    useEffect(() => {
+      const storedUserInfo = localStorage.getItem('userInfo');
+      const storedBasketItems = localStorage.getItem('basketItems');
 
+      if (storedUserInfo && storedBasketItems) {
+        const basketItems = JSON.parse(storedBasketItems);
+        setBasketCount(basketItems.length);
+      }
+    }, []);
+
+    // Update the basket count after login (in case basket is modified)
+    useEffect(() => {
+        const handleStorageChange = () => {
+          const storedBasketItems = localStorage.getItem('basketItems');
+          if (storedBasketItems) {
+            const basketItems = JSON.parse(storedBasketItems);
+            setBasketCount(basketItems.length);
+          }
+        };
+  
+        window.addEventListener('storage', handleStorageChange);
+  
+        return () => {
+          window.removeEventListener('storage', handleStorageChange);
+        };
+      }, []);
 
     const handleLogout = () => {
       localStorage.removeItem('userInfo') ;
+      localStorage.removeItem('basketItems'); // Clear basket on logout
       navigate('/login');
     }      
 
@@ -50,6 +82,9 @@ const HeaderWzSearch = ({ onSearch }) => {
         onSearch(searchTerm);
     }
 
+    const goToBasket = () => {
+        navigate('/basket'); // Navigate to the basket page
+    };    
 
     return (
         <AppBar position="static" style={{margin:0, padding:0}}>
@@ -112,9 +147,9 @@ const HeaderWzSearch = ({ onSearch }) => {
           )}
 
           {/* Shopping Basket Icon */}
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={goToBasket} >
             <Badge badgeContent={0} color="secondary">
-              <ShoppingBasket />
+              <ShoppingCartIcon />
             </Badge>
           </IconButton>
   

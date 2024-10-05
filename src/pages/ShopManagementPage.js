@@ -10,10 +10,14 @@ const ShopManagementPage = () => {
   const [shops, setShops] = useState([]); // State to store shops
   const [users, setUsers] = useState([]); // State to store users for dropdown in the form
 
+  // Check if the user is logged in by fetching userInfo from localStorage
+  const userInfo = localStorage.getItem('userInfo') 
+  ? JSON.parse(localStorage.getItem('userInfo')) : null ;
+  
   useEffect(() => {
     // Fetch shops and users from backend on component mount
     const fetchData = async () => {
-      const shopRes = await axios.get('/api/shops');
+      const shopRes = await axios.get(`/api/shops/${userInfo._id}`);
       setShops(shopRes.data);
       const userRes = await axios.get('/api/users');
       setUsers(userRes.data);
@@ -33,7 +37,7 @@ const ShopManagementPage = () => {
 
   const handleFormSave = async () => {
     // Fetch updated shops from backend
-    const res = await axios.get('/api/shops');
+    const res = await axios.get(`/api/shops/${userInfo._id}`);
     setShops(res.data);
     setShowForm(false); // Hide the form after saving
     setCurrentShop(null); // Reset currentShop after save

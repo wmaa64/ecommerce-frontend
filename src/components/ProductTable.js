@@ -14,6 +14,7 @@ const ProductTable = ({ products, onEditProduct, onDeleteProduct }) => {
             <TableCell>Brand</TableCell>
             <TableCell>Count in Stock</TableCell>
             <TableCell>Subcategory</TableCell>
+            <TableCell>UserShop</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -25,6 +26,7 @@ const ProductTable = ({ products, onEditProduct, onDeleteProduct }) => {
               <TableCell>{product.brand}</TableCell>
               <TableCell>{product.countInStock}</TableCell>
               <TableCell>{product.subcategoryId.name}</TableCell> {/* Display the name of the subcategory */}
+              <TableCell>{product.shopId.name}</TableCell> {/* Display the name of the shop */}
               <TableCell>
                 <IconButton onClick={() => onEditProduct(product)}>
                   <EditIcon />

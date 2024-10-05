@@ -14,6 +14,12 @@ const LoginScreen = () => {
     try {
       const res = await axios.post('/api/users/login', { email, password });
       localStorage.setItem('userInfo', JSON.stringify(res.data));
+
+      // Fetch the basket after login
+      const userId = res.data._id;
+      const basketResponse = await axios.get(`/api/basket/${userId}`);
+      localStorage.setItem('basketItems', JSON.stringify(basketResponse.data.items)); // Store basket items in localStorage
+
       navigate('/');
     } catch (error) {
       console.error(error);

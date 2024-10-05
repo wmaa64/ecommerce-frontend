@@ -9,14 +9,23 @@ const ProductManagementPage = () => {
   const [currentProduct, setCurrentProduct] = useState(null); // State to manage the current Product being edited
   const [products, setProducts] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
+  const [shops, setShops] = useState([]);
 
-  // Fetch products and subcategories on page load
+  // Check if the user is logged in by fetching userInfo from localStorage
+  const userInfo = localStorage.getItem('userInfo') 
+  ? JSON.parse(localStorage.getItem('userInfo')) : null ;
+  
+  // Fetch products and subcategories  and user-shops on page load
   useEffect(() => {
     const fetchData = async () => {
-      const productRes = await axios.get('/api/products');
+      const productRes = await axios.get(`/api/products/user-products/${userInfo._id}`);
       setProducts(productRes.data);
       const subcatRes = await axios.get('/api/subcategories');
       setSubcategories(subcatRes.data);
+      //Get Shops For User Logged
+      const shopRes = await axios.get(`/api/shops/${userInfo._id}`);
+      setShops(shopRes.data);
+
     };
     fetchData();
   }, []);
@@ -86,6 +95,7 @@ const ProductManagementPage = () => {
               currentProduct={currentProduct}
               onSave={handleFormSave}
               subcategories={subcategories} // Pass subcategories to populate the dropdown
+              shops={shops} // Pass shops to populate the dropdown
             />
           )}
         </Paper>
