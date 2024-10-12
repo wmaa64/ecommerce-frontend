@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../api/axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Container, Typography, Button, CircularProgress, Box } from '@mui/material';
+import { Container, Typography, Button, CircularProgress, Box, IconButton, Badge } from '@mui/material';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 const ProductDetailsPage = () => {
   const [product, setProduct] = useState({});
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
+  //const [basketCount, setBasketCount] = useState(0);
   const navigate = useNavigate();
 
 
@@ -28,10 +30,33 @@ const ProductDetailsPage = () => {
   }, [id]);
 
   const handelGoBack = ()=>{
-    navigate(-1);
+    navigate('/');
   }
 
   if (loading) return <CircularProgress />
+
+ // Function to add a product to the basket
+ const handleAddToBasket = async (productId) => {
+  const userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null;
+
+  if (!userInfo) {
+    // If the user is not logged in, navigate them to the login page
+    navigate('/login');
+  } else {
+    try {
+      const response = await axios.post('/api/basket/add', { userId: userInfo._id, productId, quantity: 1, });
+
+      // Optionally, update basket count in localStorage or trigger UI update
+      const updatedBasket = await axios.get(`/api/basket/${userInfo._id}`);
+      localStorage.setItem('basketItems', JSON.stringify(updatedBasket.data.items));
+    
+      alert('Product added to basket!');
+    } catch (error) {
+      console.error('Error adding product to basket:', error);
+      alert('Failed to add product to basket.');
+    }
+  }
+};
 
   return (
     <Container>
@@ -40,7 +65,10 @@ const ProductDetailsPage = () => {
       <Typography variant="h5">${product.price}</Typography>
       <Typography variant="body1">{product.description}</Typography>
       <Box display="flex" >
-        <Button variant="contained" color="primary" sx={{mr:2}}>Add to Cart</Button>
+        {/*<Button variant="contained" color="primary" sx={{mr:2}}>Add to Cart</Button>*/}
+        <IconButton color="primary" onClick={() => handleAddToBasket(product._id)}>
+          <AddShoppingCartIcon />
+        </IconButton>
         <Button variant="contained" color="primary" onClick={handelGoBack}>Go Back</Button>
       </Box>
       

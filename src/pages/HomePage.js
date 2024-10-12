@@ -1,23 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../api/axios';
 import { CircularProgress , Typography, Container, Grid, Paper, Button} from '@mui/material';
-//import Header from '../components/Header' ;
 import ProductList from '../components/ProducList';
-//import Search from '../components/search';
 import CategoryTreeView from '../components/CategoryTreeView';
 import HeaderWzSearch from '../components/HeaderWzSearch';
-import { Link } from 'react-router-dom' ;
-//import CategoryForm from '../components/CategoryForm' ;
+import { useNavigate } from 'react-router-dom';
 
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
-  //const [newProducts, setNewProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isNewProduct,setIsNewProduct] = useState(true);
+  const [basketCount, setBasketCount] = useState(0);
  
   //const [showForm, setShowForm] = useState(false);
+  const navigate = useNavigate();
+  
+  // Check if the user is logged in by fetching userInfo from localStorage
+  const userInfo = localStorage.getItem('userInfo') 
+  ? JSON.parse(localStorage.getItem('userInfo')) : null ;
+
+    
+  // Fetch the basket count when user logs in
+  useEffect(() => {
+    const basketItems = JSON.parse(localStorage.getItem('basketItems'));
+    if (userInfo && basketItems) {
+      setBasketCount(basketItems.length);
+    }
+  }, []);
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -76,10 +88,37 @@ const handleSubCatsSearch = async (selectedNodes) => {
   setLoading(false);
 };
 
+ // Function to add a product to the basket
+ const handleAddToBasket = async (productId) => {
+  const userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null;
+
+  if (!userInfo) {
+    // If the user is not logged in, navigate them to the login page
+    navigate('/login');
+  } else {
+    try {
+      const response = await axios.post('/api/basket/add', { userId: userInfo._id, productId, quantity: 1, });
+
+      // Optionally, update basket count in localStorage or trigger UI update
+      const updatedBasket = await axios.get(`/api/basket/${userInfo._id}`);
+      localStorage.setItem('basketItems', JSON.stringify(updatedBasket.data.items));
+      
+      const basketItems = JSON.parse(localStorage.getItem('basketItems'));
+      //const basketItems = localStorage.getItem('basketItems');
+      setBasketCount(basketItems.length);
+
+      alert('Product added to basket!');
+    } catch (error) {
+      console.error('Error adding product to basket:', error);
+      alert('Failed to add product to basket.');
+    }
+  }
+};
+
   return (
     <div>
       <div style={{margin:0, padding:0}}>
-        <HeaderWzSearch onSearch={handleSearch} />
+        <HeaderWzSearch  currentBasketCount={basketCount} onSearch={handleSearch}  />
       </div>
 
       {/* Main Content Section */}
@@ -94,20 +133,7 @@ const handleSubCatsSearch = async (selectedNodes) => {
             <Paper elevation={4} sx={{ padding: 2, height: '100vh' }}>
               <Typography variant="subtitle2" sx={{color: 'blue', }} >Choose SubCategories, Then Press Search...</Typography>
               {/* Content for the left section */}
-              <CategoryTreeView  onSearch={handleSubCatsSearch} />
-
-              {/*
-              <Button component={Link} to="/manage-categories" variant="contained" color="secondary" sx={{mb: '4px'}}>
-                Manage Categories
-              </Button>
-              <Button component={Link} to="/manage-subcategories" variant="contained" color="secondary" sx={{marginBottom: '4px'}}>
-                Manage Subcategories
-              </Button>
-              <Button component={Link} to="/manage-products" variant="contained" color="secondary" sx={{marginBottom: '4px'}}>
-                Manage Products
-              </Button>
-              */}
-              
+              <CategoryTreeView  onSearch={handleSubCatsSearch} />              
             </Paper>
           </Grid>
 
@@ -119,7 +145,7 @@ const handleSubCatsSearch = async (selectedNodes) => {
                   {(products.length>0 && (!isNewProduct)) && <Typography variant='body2' sx={{color: 'blue', }}>Search Results</Typography>}
 
                   {(loading) ? 
-                    ( <CircularProgress /> ) : ( <ProductList products={products} maxwd={200} />)
+                    ( <CircularProgress /> ) : ( <ProductList products={products} maxwd={200} onAddToBasket={handleAddToBasket} />)
                   }
                 </div>            
             </Paper>

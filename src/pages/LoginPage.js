@@ -17,8 +17,16 @@ const LoginScreen = () => {
 
       // Fetch the basket after login
       const userId = res.data._id;
+      
       const basketResponse = await axios.get(`/api/basket/${userId}`);
-      localStorage.setItem('basketItems', JSON.stringify(basketResponse.data.items)); // Store basket items in localStorage
+
+      // Check if basket items exist
+      if (basketResponse.data && basketResponse.data.items) {
+        localStorage.setItem('basketItems', JSON.stringify(basketResponse.data.items));
+      } else {
+        console.log('No items in basket');
+        localStorage.setItem('basketItems', JSON.stringify([])); // Store an empty array if no items
+      }
 
       navigate('/');
     } catch (error) {

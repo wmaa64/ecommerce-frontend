@@ -1,36 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { TextField, Box, Button } from '@mui/material';
 import { AppBar, Toolbar, IconButton, Typography, Badge, Menu, MenuItem } from '@mui/material';
-import { ShoppingBasket, Menu as MenuIcon, AccountCircle } from '@mui/icons-material';
+import { Menu as MenuIcon, AccountCircle } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { Link, json, useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 
-const HeaderWzSearch = ({ onSearch }) => {
+const HeaderWzSearch = ({ currentBasketCount, onSearch }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [anchorEl, setAnchorEl] = useState(null);
-    const [basketCount, setBasketCount] = useState(0);
+    const [basketCount, setBasketCount] = useState(currentBasketCount || 0);
 
     const isMenuOpen = Boolean(anchorEl);
     const theme = useTheme();
     const navigate = useNavigate();
 
+        
     // Check if the user is logged in by fetching userInfo from localStorage
     const userInfo = localStorage.getItem('userInfo') 
     ? JSON.parse(localStorage.getItem('userInfo')) : null ;
-      
+
+     
     // Fetch the basket count when user logs in
     useEffect(() => {
-      const storedUserInfo = localStorage.getItem('userInfo');
-      const storedBasketItems = localStorage.getItem('basketItems');
-
-      if (storedUserInfo && storedBasketItems) {
-        const basketItems = JSON.parse(storedBasketItems);
+      const basketItems = JSON.parse(localStorage.getItem('basketItems'));
+      if (userInfo && basketItems) {
         setBasketCount(basketItems.length);
       }
     }, []);
 
+ 
+    useEffect(() =>{
+      if (currentBasketCount!== undefined){
+        setBasketCount(currentBasketCount);
+      }
+    },[currentBasketCount]);
+
+ /*    
     // Update the basket count after login (in case basket is modified)
     useEffect(() => {
         const handleStorageChange = () => {
@@ -47,10 +54,11 @@ const HeaderWzSearch = ({ onSearch }) => {
           window.removeEventListener('storage', handleStorageChange);
         };
       }, []);
-
+*/
     const handleLogout = () => {
       localStorage.removeItem('userInfo') ;
       localStorage.removeItem('basketItems'); // Clear basket on logout
+      setBasketCount(0);
       navigate('/login');
     }      
 
@@ -148,7 +156,7 @@ const HeaderWzSearch = ({ onSearch }) => {
 
           {/* Shopping Basket Icon */}
           <IconButton color="inherit" onClick={goToBasket} >
-            <Badge badgeContent={0} color="secondary">
+            <Badge badgeContent={basketCount} color="secondary">
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
