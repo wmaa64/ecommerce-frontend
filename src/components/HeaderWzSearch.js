@@ -91,7 +91,9 @@ const HeaderWzSearch = ({ currentBasketCount, onSearch }) => {
     }
 
     const goToBasket = () => {
-        navigate('/basket'); // Navigate to the basket page
+      if (userInfo){
+        navigate(`/basket/${userInfo._id}`); // Navigate to the basket page
+      }
     };    
 
     return (

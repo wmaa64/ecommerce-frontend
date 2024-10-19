@@ -41,7 +41,7 @@ const Product = ({ product, maxwd, onAddProductToBasket }) => {
       </Link>
       <CardContent>
         <Typography variant= "subtitle2"   >{product.name}</Typography>
-        <Typography variant= "subtitle2"   >${product.price}</Typography>
+        <Typography variant= "subtitle2"   >EGP {product.price}</Typography>
       </CardContent>
       <IconButton color="primary" onClick={AddBasketQuantity}>
         <Badge 

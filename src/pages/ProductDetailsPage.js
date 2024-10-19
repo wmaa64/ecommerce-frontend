@@ -62,7 +62,7 @@ const ProductDetailsPage = () => {
     <Container>
       <Typography variant="h3">{product.title}</Typography>
       <img src={product.image} alt={product.title} style={{ width: '40%' }} />
-      <Typography variant="h5">${product.price}</Typography>
+      <Typography variant="h5">EGP {product.price}</Typography>
       <Typography variant="body1">{product.description}</Typography>
       <Box display="flex" >
         {/*<Button variant="contained" color="primary" sx={{mr:2}}>Add to Cart</Button>*/}

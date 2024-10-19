@@ -28,7 +28,7 @@ const HomePage = () => {
     if (userInfo && basketItems) {
       setBasketCount(basketItems.length);
     }
-  }, []);
+  }, [basketCount]);
 
 
   useEffect(() => {
