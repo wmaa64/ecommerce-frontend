@@ -10,13 +10,15 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import BasketPage from './pages/BasketPage';
+import LandingPage from './pages/LandingPage';
 
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<LandingPage />} /> {/* Landing page route */}
+        <Route path="/home" element={<HomePage />} />
         <Route path="/product/:id" element={<ProductDetailsPage />} />
         <Route path="/manage-categories" element={<CategoryManagementPage />} /> {/* Add the route */}
         <Route path="/manage-subcategories" element={<SubcategoryManagementPage />} /> {/* Add the route */}
