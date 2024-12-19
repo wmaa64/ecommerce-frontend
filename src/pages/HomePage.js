@@ -5,9 +5,11 @@ import ProductList from '../components/ProducList';
 import CategoryTreeView from '../components/CategoryTreeView';
 import HeaderWzSearch from '../components/HeaderWzSearch';
 import { useNavigate } from 'react-router-dom';
-
+import { useTranslation } from 'react-i18next';
 
 const HomePage = () => {
+  const { t, i18n } = useTranslation();  // Initialize translation
+  
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,7 +18,12 @@ const HomePage = () => {
  
   //const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
-  
+ 
+  const handleLanguageChange = (lng) => {
+    i18n.changeLanguage(lng); // Change language
+  };
+
+
   // Check if the user is logged in by fetching userInfo from localStorage
   const userInfo = localStorage.getItem('userInfo') 
   ? JSON.parse(localStorage.getItem('userInfo')) : null ;
@@ -131,7 +138,7 @@ const handleSubCatsSearch = async (selectedNodes) => {
           {/* Left Section (1/3 of the screen) because md is 4 from 12*/}
           <Grid item xs={12} md={3}>
             <Paper elevation={4} sx={{ padding: 2, height: '100vh' }}>
-              <Typography variant="subtitle2" sx={{color: 'blue', }} >Choose SubCategories, Then Press Search...</Typography>
+              <Typography variant="subtitle2" sx={{color: 'blue', }} >{t('chooseSubCategories')}</Typography>
               {/* Content for the left section */}
               <CategoryTreeView  onSearch={handleSubCatsSearch} />              
             </Paper>
@@ -141,8 +148,8 @@ const handleSubCatsSearch = async (selectedNodes) => {
           <Grid item xs={12} md={9}>
             <Paper elevation={4} sx={{ padding: 2, height: '100vh' }}>
                 <div>
-                  {(products.length>0 && (isNewProduct)) && <Typography variant='body2' sx={{color: 'blue', }}>New Products</Typography>}
-                  {(products.length>0 && (!isNewProduct)) && <Typography variant='body2' sx={{color: 'blue', }}>Search Results</Typography>}
+                  {(products.length>0 && (isNewProduct)) && <Typography variant='body2' sx={{color: 'blue', }}>{t('newProducts')}</Typography>}
+                  {(products.length>0 && (!isNewProduct)) && <Typography variant='body2' sx={{color: 'blue', }}>{t('searchResuls')}</Typography>}
 
                   {(loading) ? 
                     ( <CircularProgress /> ) : ( <ProductList products={products} maxwd={200} onAddToBasket={handleAddToBasket} />)

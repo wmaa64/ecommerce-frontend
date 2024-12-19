@@ -5,17 +5,23 @@ import { Menu as MenuIcon, AccountCircle } from '@mui/icons-material';
 import { useTheme } from '@mui/material/styles';
 import { Link, json, useNavigate } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-
+import { useTranslation } from 'react-i18next';
+import { Language as LanguageIcon } from '@mui/icons-material';
+import Flag from 'react-world-flags';
 
 const HeaderWzSearch = ({ currentBasketCount, onSearch }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [anchorEl, setAnchorEl] = useState(null);
     const [basketCount, setBasketCount] = useState(currentBasketCount || 0);
-
+    const { t, i18n } = useTranslation(); // Initialize useTranslation
     const isMenuOpen = Boolean(anchorEl);
     const theme = useTheme();
     const navigate = useNavigate();
 
+    // Function to handle language change
+    const handleLanguageChange = (lng) => {
+      i18n.changeLanguage(lng); // Change the language
+  };
         
     // Check if the user is logged in by fetching userInfo from localStorage
     const userInfo = localStorage.getItem('userInfo') 
@@ -91,13 +97,13 @@ const HeaderWzSearch = ({ currentBasketCount, onSearch }) => {
     }
 
     const goToBasket = () => {
-      if (userInfo){
+      if (userInfo){ 
         navigate(`/basket/${userInfo._id}`); // Navigate to the basket page
       }
     };    
 
     return (
-        <AppBar position="static" style={{margin:0, padding:0}}>
+        <AppBar position="static" style={{margin:0, padding:0 }}>
         <Toolbar>
           {/* Menu Icon for Mobile */}
           <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleMenuOpen}>
@@ -105,8 +111,8 @@ const HeaderWzSearch = ({ currentBasketCount, onSearch }) => {
           </IconButton>
   
           {/* App Name or Logo */}
-          <Typography variant="h6" style={{ minWidth: '40vh' }} >
-            Electronic Shop
+          <Typography variant="h6" style={{ minWidth: '40vh' , marginRight: '8px' }} >
+            {t('appName')}
           </Typography>
           
           
@@ -115,7 +121,7 @@ const HeaderWzSearch = ({ currentBasketCount, onSearch }) => {
                                     color: theme.palette.secondary.main , // Text color
                                     }, width: '70vh'
                                  }}
-                label="Search Products"
+                label={t("searchBoxLabel")}
                 variant="filled"
                 color='secondary'
                 fullWidth
@@ -124,7 +130,7 @@ const HeaderWzSearch = ({ currentBasketCount, onSearch }) => {
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Button variant="contained" color="secondary"  onClick={handleSearch_} sx={{ ml: 2, mr:2 }}>
-                Search
+                {t("searchButton")}
             </Button>
           
           {userInfo ? (
@@ -148,10 +154,10 @@ const HeaderWzSearch = ({ currentBasketCount, onSearch }) => {
           ) : (
             <Box  display='flex' gap={2} >
               <Link to='/login' >
-                <Box sx={{padding: '8px',backgroundColor: '#f0f0f0',borderRadius: '4px','&:hover': {backgroundColor: '#e0e0e0'}}}>Login</Box>
+                <Box sx={{padding: '8px',backgroundColor: '#f0f0f0',borderRadius: '4px','&:hover': {backgroundColor: '#e0e0e0'}}}>{t('login')}</Box>
               </Link>
               <Link to='/register'>
-                <Box sx={{padding: '8px',backgroundColor: '#f0f0f0',borderRadius: '4px','&:hover': {backgroundColor: '#e0e0e0'}}}>Register</Box>
+                <Box sx={{padding: '8px',backgroundColor: '#f0f0f0',borderRadius: '4px','&:hover': {backgroundColor: '#e0e0e0'}}}>{t('register')}</Box>
               </Link>
             </Box>
           )}
@@ -162,7 +168,23 @@ const HeaderWzSearch = ({ currentBasketCount, onSearch }) => {
               <ShoppingCartIcon />
             </Badge>
           </IconButton>
-  
+
+          <IconButton color="inherit" onClick={() => handleLanguageChange(i18n.language === 'en' ? 'ar' : 'en')}>
+            {i18n.language === 'en' ? 
+              (
+                <Box display="flex" alignItems="center">
+                  <Flag code="EG" style={{ width: 25, height: 20, marginLeft: 4, marginRight: 4  }} />
+                  <Typography variant="body2">AR</Typography>
+                </Box>
+              ) : (
+                <Box display="flex" alignItems="center">
+                  <Flag code="US" style={{ width: 25, height: 20, marginLeft: 4, marginRight: 4 }} />
+                  <Typography variant="body2">EN</Typography>
+                </Box>
+              )}
+          </IconButton>
+
+              
           {/* Account Icon */}
           <IconButton
             edge="end"

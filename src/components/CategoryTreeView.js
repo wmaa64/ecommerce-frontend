@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from '../api/axios';
 import { Box, Checkbox, FormControlLabel, Button } from '@mui/material';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
-import { TreeItem } from '@mui/x-tree-view/TreeItem'
+import { TreeItem } from '@mui/x-tree-view/TreeItem';
+import { useTranslation } from 'react-i18next';
  
 
 const CategoryTreeView = ({ onSearch })=>{
     const [categories, setCategories] = useState([]);
     const [selectedNodes, setSelectedNodes] = useState([]);
+    const { t, i18n } = useTranslation(); // Initialize useTranslation
 
     // Fetch categories and subcategories from the backend
     useEffect(() => {
@@ -21,7 +23,7 @@ const CategoryTreeView = ({ onSearch })=>{
         };
 
         fetchCategories();
-    }, []);
+    }, [i18n.language]);
 
 
 const handleSearch_ = ()=>{
@@ -90,10 +92,10 @@ const renderChildTreeItems = (nodes) => {
   const formatTreeData = (data) => 
     data.map((category) => ({
       id: category._id ,
-      label: category.name,
+      label: i18n.language === 'en' ? category.name.en : category.name.ar ,
       children: category.subcategories.map((subcategory) => ({
         id: subcategory._id ,
-        label: subcategory.name,
+        label: i18n.language === 'en' ?  subcategory.name.en : subcategory.name.ar ,
       })),
     }));
 
@@ -101,7 +103,7 @@ const renderChildTreeItems = (nodes) => {
 
   return (
     <Box>
-      <Button variant="contained" color="secondary" onClick={handleSearch_} sx={{ ml: 2 }}>Search</Button>
+      <Button variant="contained" color="secondary" onClick={handleSearch_} sx={{ ml: 2 }}>{t("searchButton")}</Button>
 
       <SimpleTreeView sx={{color: 'blue', fontSize: '1.5px' }}>
         {renderTreeItems(treeData)}
